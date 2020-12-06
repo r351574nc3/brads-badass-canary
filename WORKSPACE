@@ -1,4 +1,4 @@
-workspace(name = "io_bazel_rules_jsonnet")
+workspace(name = "com_github_r351574nc3_rules_canary")
 
 load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
