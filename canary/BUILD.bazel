@@ -1,0 +1,34 @@
+filegroup(
+    name = "all_files",
+    testonly = True,
+    srcs = glob(["**"]) + [
+        "//canary/private:all_files",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+filegroup(
+    name = "all_rules",
+    srcs = glob(["*.bzl"]) + [
+        "//canary/private:all_rules",
+    ],
+    visibility = ["//visibility:public"],
+)
+
+bzl_library(
+    name = "deps",
+    srcs = ["deps.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//canary/private:repositories",
+    ],
+)
+
+bzl_library(
+    name = "canary",
+    srcs = ["canary.bzl"],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//canary/private:repositories",
+    ],
+)
