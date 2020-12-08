@@ -1,4 +1,4 @@
-import brads_badass_canary
+from brads_badass_canary import deploy
 
 if __name__ == "__main__":
-    brads_badass_canary.run()
+    deploy()

@@ -1,35 +1,39 @@
 import os
-from azure.identity import ClientSecretCredential
-from azure.mgmt.resource import ResourceManagementClient
+from brads_badass_canary import api_connections
+from brads_badass_canary import logic_app
 
 subscription_id = os.environ.get(
     'AZURE_SUBSCRIPTION_ID',
     '11111111-1111-1111-1111-111111111111') # your Azure Subscription Id
-credentials = ClientSecretCredential(
-    client_id=os.environ['AZURE_CLIENT_ID'],
-    client_secret=os.environ['AZURE_CLIENT_SECRET'],
-    tenant_id=os.environ['AZURE_TENANT_ID']
-)
+resource_group = os.environ.get(
+    'AZURE_DEFAULT_RESOURCE_GROUP',
+    'my-resource-group') # Resource group to deploy to
 location = os.environ.get('LOCATION', 'centralus')
-client = ResourceManagementClient(credentials, subscription_id)
 
-def print_item(group):
-    """Print a ResourceGroup instance."""
-    print("\tName: {}".format(group.name))
-    print("\tId: {}".format(group.id))
-    print("\tLocation: {}".format(group.location))
-    print("\tTags: {}".format(group.tags))
-    print_properties(group.properties)
+def la_deployer():
+    return logic_app.deployer.Deployer(subscription_id, resource_group)
 
+def conn_deployer():
+    return api_connections.deployer.Deployer(subscription_id, resource_group)
 
-def print_properties(props):
-    """Print a ResourceGroup properties instance."""
-    if props and props.provisioning_state:
-        print("\tProperties:")
-        print("\t\tProvisioning State: {}".format(props.provisioning_state))
-    print("\n\n")
+def deploy():
+    print("Deploying API Connections...")
+    for provider_name in ["sms-service", "office365-service", "teams-service"]:
+        conn_deployer().deploy(
+            {
+                "provider_name": provider_name,
+                "connection_name": provider_name,
+                "subscription_id": subscription_id
+            }
+        )
+    print("Deployment complete.")
 
-def run():
-    print("List all of the resources within the group")
-    for item in client.resources.list_by_resource_group("cde-nonprod"):
-        print_item(item)
+    print("Deploying Canary...")
+    la_deployer().deploy(
+        {
+            "subscription_id": subscription_id,
+            "resource_group": resource_group,
+            "workflows_notification_app_name": "canary-notification-app-test"
+        }
+    )
+    print("Deployment complete.")
