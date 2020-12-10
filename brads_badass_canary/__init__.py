@@ -16,7 +16,12 @@ def la_deployer():
 def conn_deployer():
     return api_connections.deployer.Deployer(subscription_id, resource_group)
 
-def deploy():
+def deploy(name):
+    """Deploys necessary API connections and Logic App
+
+    :param name: Name of the logic app to build and deploy
+    :type string: 
+    """
     print("Deploying API Connections...")
     for provider_name in ["sms-service", "office365-service", "teams-service"]:
         conn_deployer().deploy(
@@ -33,7 +38,7 @@ def deploy():
         {
             "subscription_id": subscription_id,
             "resource_group": resource_group,
-            "workflows_notification_app_name": "canary-notification-app-test"
+            "workflows_notification_app_name": name
         }
     )
     print("Deployment complete.")
