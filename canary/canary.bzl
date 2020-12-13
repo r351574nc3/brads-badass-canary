@@ -27,7 +27,7 @@ deploy_canary = rule(
             executable = True,
             cfg = "exec",
             allow_files = True,
-            default = Label("@com_github_r351574nc3_rules_canary//canary:deploy")
+            default = Label("//canary:deploy")
         )
     },
     executable = True
