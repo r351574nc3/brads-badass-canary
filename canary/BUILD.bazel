@@ -23,7 +23,6 @@ py_binary(
     srcs = ["deploy.py"],
     visibility = ["//visibility:public"],
     deps = [
-        "//brads_badass_canary:library",
-        "@rules_python//python:defs.bzl"
+        "//brads_badass_canary:library"
     ]
 )
