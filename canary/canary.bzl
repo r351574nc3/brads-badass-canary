@@ -20,7 +20,7 @@ def _deploy_canary_impl(ctx):
     )
 
 deploy_canary = rule(
-    implementation = _deploy_arm_template_impl,
+    implementation = _deploy_canary_impl,
     attrs = {
         "out": attr.output(mandatory = True),
         "deploy_tool": attr.label(
