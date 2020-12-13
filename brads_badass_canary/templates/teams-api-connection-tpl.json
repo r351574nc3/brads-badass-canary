@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connections_plutocracy_name": {
+            "defaultValue": "teams",
+            "type": "string"
+        }
+    },
+    "variables": {},
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "2016-06-01",
+            "name": "[parameters('connections_plutocracy_name')]",
+            "location": "centralus",
+            "kind": "V1",
+            "properties": {
+                "displayName": "leo.przybylski@optum.com",
+                "customParameterValues": {},
+                "api": {
+                    "id": "[concat('/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/providers/Microsoft.Web/locations/centralus/managedApis/', parameters('connections_plutocracy_name'))]"
+                }
+            }
+        }
+    ]
+}

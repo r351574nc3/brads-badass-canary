@@ -1,3 +1,6 @@
+load("@rules_python//python:defs.bzl", "py_binary")
+exports_files(["canary.bzl", "deps.bzl"])
+
 filegroup(
     name = "all_files",
     testonly = True,
@@ -15,26 +18,11 @@ filegroup(
     visibility = ["//visibility:public"],
 )
 
-bzl_library(
-    name = "deps",
-    srcs = ["deps.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//canary/private:repositories",
-    ],
-)
-
-bzl_library(
-    name = "canary",
-    srcs = ["canary.bzl"],
-    visibility = ["//visibility:public"],
-    deps = [
-        "//canary/private:repositories",
-    ],
-)
-
 py_binary(
     name = "deploy",
     srcs = ["deploy.py"],
-    deps = [],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//brads_badass_canary:library"
+    ]
 )

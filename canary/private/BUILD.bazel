@@ -1,5 +1,5 @@
-load("@bazel_skylib//:bzl_library.bzl", "bzl_library")
-
+package(default_visibility = ["//canary:__subpackages__"])
+exports_files(["repositories.bzl", "common.bzl"])
 
 config_setting(
     name = "strip-always",
@@ -19,21 +19,4 @@ config_setting(
 config_setting(
     name = "stamp",
     values = {"stamp": "true"},
-)
-
-
-bzl_library(
-    name = "repositories",
-    srcs = ["repositories.bzl"],
-    visibility = ["//canary:__subpackages__"],
-    # Don't list dependency on @bazel_tools//tools/build_defs/repo:http.bzl
-    deps = [
-        ":common",
-    ],  # keep
-)
-
-bzl_library(
-    name = "common",
-    srcs = ["common.bzl"],
-    visibility = ["//canary:__subpackages__"],
 )

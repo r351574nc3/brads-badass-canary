@@ -1,0 +1,250 @@
+{
+  "accessControl": null",
+  "accessEndpoint": "https://prod-31.centralus.logic.azure.com:443/workflows/4b291184e4f24acdba0dea39f66dc704",
+  "changedTime": "2020-12-07T14:08:40.994376+00:00",
+  "createdTime": "2020-11-30T22:08:52.163084+00:00",
+  "definition": {
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "actions": {
+      "Condition_2": {
+        "actions": {
+          "Send_SMS_2": {
+            "inputs": {
+              "body": {
+                "from": "+18443253976",
+                "message": "@variables('Message')",
+                "sendSmsOptions": {
+                  "enableDeliveryReport": false
+                },
+                "to": [
+                  "+15204401252"
+                ]
+              },
+              "host": {
+                "connection": {
+                  "name": "@parameters('$connections')['azurecommunicationservicessms']['connectionId']"
+                }
+              },
+              "method": "post",
+              "path": "/sms"
+            },
+            "runAfter": {},
+            "type": "ApiConnection"
+          }
+        },
+        "expression": {
+          "or": [
+            {
+              "equals": [
+                "@variables('SendSms')",
+                true
+              ]
+            }
+          ]
+        },
+        "runAfter": {
+          "Set_SendSms_to_False": [
+            "Succeeded"
+          ]
+        },
+        "type": "If"
+      },
+      "Initialize_Message": {
+        "inputs": {
+          "variables": [
+            {
+              "name": "Message",
+              "type": "string",
+              "value": "@triggerBody()?['message']"
+            }
+          ]
+        },
+        "runAfter": {},
+        "type": "InitializeVariable"
+      },
+      "Send_an_email_(V2)": {
+        "inputs": {
+          "body": {
+            "Body": "<p>@{variables('Message')}<br>\n</p>",
+            "Subject": "Event has triggered",
+            "To": "leo.przybylski@optum.com"
+          },
+          "host": {
+            "connection": {
+              "name": "@parameters('$connections')['office365']['connectionId']"
+            }
+          },
+          "method": "post",
+          "path": "/v2/Mail"
+        },
+        "runAfter": {
+          "Set_SendSms_to_False": [
+            "Succeeded"
+          ]
+        },
+        "type": "ApiConnection"
+      },
+      "Set_SendSms_to_False": {
+        "inputs": {
+          "variables": [
+            {
+              "name": "SendSms",
+              "type": "boolean",
+              "value": false
+            }
+          ]
+        },
+        "runAfter": {
+          "Initialize_Message": [
+            "Succeeded"
+          ]
+        },
+        "type": "InitializeVariable"
+      },
+      "Update_Pluto_Notifications_Channel": {
+        "inputs": {
+          "body": {
+            "body": {
+              "content": "<p>@{variables('Message')}</p>",
+              "contentType": "html"
+            }
+          },
+          "host": {
+            "connection": {
+              "name": "@parameters('$connections')['teams']['connectionId']"
+            }
+          },
+          "method": "post",
+          "path": "/v3/beta/teams/@{encodeURIComponent('b6ce1a32-ad9a-45e2-a1af-36c6bcd95b9d')}/channels/@{encodeURIComponent('19:29cbad13274a4f8488b0687999d07660@thread.tacv2')}/messages"
+        },
+        "runAfter": {
+          "Set_SendSms_to_False": [
+            "Succeeded"
+          ]
+        },
+        "type": "ApiConnection"
+      }
+    },
+    "contentVersion": "1.0.0.0",
+    "outputs": {},
+    "parameters": {
+      "$connections": {
+        "defaultValue": {},
+        "type": "Object"
+      }
+    },
+    "triggers": {
+      "manual": {
+        "inputs": {
+          "schema": {
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "kind": "Http",
+        "type": "Request"
+      }
+    }
+  },
+  "endpointsConfiguration": {
+    "connector": {
+      "accessEndpointIpAddresses": null,
+      "outgoingIpAddresses": [
+        {
+          "address": "13.89.171.80/28"
+        },
+        {
+          "address": "40.122.49.51"
+        },
+        {
+          "address": "52.173.245.164"
+        },
+        {
+          "address": "52.173.241.27"
+        }
+      ]
+    },
+    "workflow": {
+      "accessEndpointIpAddresses": [
+        {
+          "address": "13.67.236.76"
+        },
+        {
+          "address": "40.77.111.254"
+        },
+        {
+          "address": "40.77.31.87"
+        },
+        {
+          "address": "104.43.243.39"
+        }
+      ],
+      "outgoingIpAddresses": [
+        {
+          "address": "13.67.236.125"
+        },
+        {
+          "address": "104.208.25.27"
+        },
+        {
+          "address": "40.122.170.198"
+        },
+        {
+          "address": "40.113.218.230"
+        },
+        {
+          "address": "23.100.86.139"
+        },
+        {
+          "address": "23.100.87.24"
+        },
+        {
+          "address": "23.100.87.56"
+        },
+        {
+          "address": "23.100.82.16"
+        }
+      ]
+    }
+  },
+  "id": "/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/resourceGroups/cde-nonprod/providers/Microsoft.Logic/workflows/canvas-notification-app",
+  "integrationAccount": null,
+  "integrationServiceEnvironment": null,
+  "location": "centralus",
+  "name": "canvas-notification-app",
+  "parameters": {
+    "$connections": {
+      "description": null,
+      "metadata": null,
+      "type": null,
+      "value": {
+        "azurecommunicationservicessms": {
+          "connectionId": "/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/resourceGroups/cde-pipeline-test/providers/Microsoft.Web/connections/azurecommunicationservicessms",
+          "connectionName": "azurecommunicationservicessms",
+          "id": "/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/providers/Microsoft.Web/locations/centralus/managedApis/azurecommunicationservicessms"
+        },
+        "office365": {
+          "connectionId": "/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/resourceGroups/cde-pipeline-test/providers/Microsoft.Web/connections/office365",
+          "connectionName": "office365",
+          "id": "/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/providers/Microsoft.Web/locations/centralus/managedApis/office365"
+        },
+        "teams": {
+          "connectionId": "/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/resourceGroups/cde-pipeline-test/providers/Microsoft.Web/connections/teams",
+          "connectionName": "teams",
+          "id": "/subscriptions/eff306cd-8a1e-4679-a349-67f88bfb6f62/providers/Microsoft.Web/locations/centralus/managedApis/teams"
+        }
+      }
+    }
+  },
+  "provisioningState": "Succeeded",
+  "resourceGroup": "cde-nonprod",
+  "sku": null,
+  "state": "Enabled",
+  "tags": {},
+  "type": "Microsoft.Logic/workflows",
+  "version": "08585942567645357759"
+}

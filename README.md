@@ -10,3 +10,5 @@ Canary is a logic app deployed to azure. To test it we need to get the resource 
 ```
 curl -X POST -d@payload.json https://management.azure.com/{logic-app-resource-ID}/
 ```
+
+## Installing
