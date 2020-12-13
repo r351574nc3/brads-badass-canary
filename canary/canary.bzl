@@ -12,7 +12,7 @@ def _deploy_canary_impl(ctx):
     # Action to call the script.
     ctx.actions.run(
         inputs = [],
-        outputs = [ctx.outputs.out],
+        outputs = [],
         arguments = args,
         progress_message = "Deploying {} ...".format(ctx.label.name),
         use_default_shell_env = True,
