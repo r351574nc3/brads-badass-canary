@@ -22,7 +22,7 @@ def deploy(name):
     :param name: Name of the logic app to build and deploy
     :type string: 
     """
-    print("Deploying API Connections...")
+    print("Deploying API Connections to subscription {}...".format(subscription_id))
     for provider_name in ["sms-service", "office365-service", "teams-service"]:
         conn_deployer().deploy(
             {

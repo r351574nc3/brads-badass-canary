@@ -9,6 +9,7 @@ py_library(
     deps = [
         "//brads_badass_canary/api_connections:library",
         "//brads_badass_canary/logic_app:library",
+        "//brads_badass_canary/templates:library",
         requirement("azure-mgmt-resource"),
         requirement("azure-identity"),
         requirement("msrestazure"),

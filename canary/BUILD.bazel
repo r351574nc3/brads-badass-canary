@@ -27,7 +27,3 @@ py_binary(
         "//brads_badass_canary:library"
     ]
 )
-
-deploy_canary(
-    name = "canary-notification-app"
-)

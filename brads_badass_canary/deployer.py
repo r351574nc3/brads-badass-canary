@@ -38,7 +38,7 @@ class Deployer(object):
 
         with open(self.get_template_path(), "r") as tfd:
             template = json.load(tfd)
-        
+        print("PARAMETERS={}".format(parameters))
         print("TEMPLATE={}".format(template))
 
         # Deployment is an asynchronous operation

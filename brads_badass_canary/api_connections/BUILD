@@ -7,6 +7,7 @@ py_library(
     name = "library",
     srcs = ["__init__.py", "deployer.py"],
     deps = [
+        "//brads_badass_canary/templates:library",
         requirement("azure-mgmt-resource"),
         requirement("azure-identity"),
         requirement("msrestazure"),
