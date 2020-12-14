@@ -9,21 +9,21 @@ def _deploy_canary_impl(ctx):
     """Takes an existing arm template and deploys it."""
     args = [ctx.label.name]
     log = ctx.actions.declare_file("{}.log".format(ctx.label.name))
+    deploy = ctx.executable._deploy
 
     # Action to call the script.
     ctx.actions.run(
-        deploy = ctx.executable
         inputs = [],
         outputs = [log],
         arguments = args,
-        tools = [],
+        tools = [ deploy ],
         progress_message = "Deploying {} ...".format(ctx.label.name),
         use_default_shell_env = True,
-        executable = ctx.executable.deploy_tool,
+        executable = deploy,
     )
 
 deploy_canary = rule(
-    implementation = _foo_binary_impl,
+    implementation = _deploy_canary_impl,
     attrs = {
         "srcs": attr.label_list(allow_files = True),
         "deps": attr.label_list(),
