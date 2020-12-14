@@ -11,7 +11,7 @@ def _deploy_canary_impl(ctx):
     log = ctx.actions.declare_file("{}.log".format(ctx.label.name))
 
     # Action to call the script.
-    ctx.actions.run_shell(
+    ctx.actions.run(
         inputs = [],
         outputs = [log],
         arguments = args,
