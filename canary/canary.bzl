@@ -12,23 +12,27 @@ def _deploy_canary_impl(ctx):
 
     # Action to call the script.
     ctx.actions.run(
+        deploy = ctx.executable
         inputs = [],
         outputs = [log],
         arguments = args,
+        tools = [],
         progress_message = "Deploying {} ...".format(ctx.label.name),
         use_default_shell_env = True,
         executable = ctx.executable.deploy_tool,
     )
 
 deploy_canary = rule(
-    implementation = _deploy_canary_impl,
+    implementation = _foo_binary_impl,
     attrs = {
-        "deploy_tool": attr.label(
+        "srcs": attr.label_list(allow_files = True),
+        "deps": attr.label_list(),
+        "_deploy": attr.label(
+            default = Label("//canary:deploy"),
+            allow_files = True,
             executable = True,
             cfg = "exec",
-            allow_files = True,
-            default = Label("//canary:deploy")
-        )
+        ),
     },
-    executable = True
+    outputs = {"out": "%{name}.out"},
 )
