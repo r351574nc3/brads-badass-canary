@@ -8,11 +8,12 @@ gen_arm_template = rule(implementation = _gen_arm_template_impl)
 def _deploy_canary_impl(ctx):
     """Takes an existing arm template and deploys it."""
     args = [ctx.label.name]
+    log = ctx.actions.declare_file("{}.log".format(ctx.label.name))
 
     # Action to call the script.
-    ctx.actions.run(
+    ctx.actions.run_shell(
         inputs = [],
-        outputs = [ctx.outputs.out],
+        outputs = [log],
         arguments = args,
         progress_message = "Deploying {} ...".format(ctx.label.name),
         use_default_shell_env = True,
@@ -22,7 +23,6 @@ def _deploy_canary_impl(ctx):
 deploy_canary = rule(
     implementation = _deploy_canary_impl,
     attrs = {
-        "out": attr.output(mandatory = True),
         "deploy_tool": attr.label(
             executable = True,
             cfg = "exec",
@@ -32,4 +32,3 @@ deploy_canary = rule(
     },
     executable = True
 )
-
