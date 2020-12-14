@@ -1,4 +1,5 @@
 load("@rules_python//python:defs.bzl", "py_binary")
+load(":canary.bzl", "deploy_canary")
 exports_files(["canary.bzl", "deps.bzl"])
 
 filegroup(
@@ -25,4 +26,8 @@ py_binary(
     deps = [
         "//brads_badass_canary:library"
     ]
+)
+
+deploy_canary(
+    name = "canary-notification-app"
 )
