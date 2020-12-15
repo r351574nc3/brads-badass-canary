@@ -23,14 +23,24 @@ def deploy(name):
     :type string: 
     """
     print("Deploying API Connections to subscription {}...".format(subscription_id))
-    for provider_name in ["sms-service", "office365-service", "teams-service"]:
-        conn_deployer().deploy(
-            {
-                "provider_name": provider_name,
-                "connection_name": provider_name,
-                "subscription_id": subscription_id
-            }
-        )
+    for params in [
+        {   
+            "provider_name": "azurecommunicationservicessms",
+            "connection_name": "sms-service",
+            "subscription_id": subscription_id,
+        },
+        {
+            "provider_name": "office365",
+            "connection_name": "office365-service",
+            "subscription_id": subscription_id,
+        },
+        {
+            "provider_name": "teams",
+            "connection_name": "teams-service",
+            "subscription_id": subscription_id,
+        },
+    ]:
+        conn_deployer().deploy(params)
     print("Deployment complete.")
 
     print("Deploying Canary...")

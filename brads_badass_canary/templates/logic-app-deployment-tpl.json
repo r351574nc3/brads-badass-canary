@@ -29,15 +29,15 @@
             "type": "string"
         },
         "connections_sms_service_id": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/sms-service')]",
+            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/azurecommunicationservicessms')]",
             "type": "string"
         },
         "connections_office365_service_id": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/office365-service')]",
+            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/office365')]",
             "type": "string"
         },
         "connections_teams_service_id": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/teams-service')]",
+            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/teams')]",
             "type": "string"
         }
     },
