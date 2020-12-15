@@ -45,7 +45,7 @@
         {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
-            "name": "[parameters('workflows_canvas_notification_app_name')]",
+            "name": "[parameters('workflows_notification_app_name')]",
             "location": "centralus",
             "properties":{
                 "state": "Enabled",
