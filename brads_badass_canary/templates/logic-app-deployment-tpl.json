@@ -24,6 +24,20 @@
         "connections_office365_service_id": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/locations/centralus/managedApis/office365')]",
         "connections_teams_service_id": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/locations/centralus/managedApis/teams')]"
     },
+    "outputs": {
+        "resource_group_base": {
+            "value": "[variables('resource_group_base')]",
+            "type": "string"
+        },
+        "connections_sms_service_id": {
+            "value": "[variables('connections_sms_service_id')]",
+            "type": "string"
+        },
+        "connections_sms_service_externalid": {
+            "value": "[variables('connections_sms_service_externalid')]",
+            "type": "string"
+        }
+    },
     "resources": [
         {
             "type": "Microsoft.Logic/workflows",
