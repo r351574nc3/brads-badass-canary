@@ -9,6 +9,7 @@ gen_arm_template = rule(implementation = _gen_arm_template_impl)
 def _deploy_canary_impl(ctx):
     deploy = ctx.executable._deploy
     out = ctx.actions.declare_file(ctx.label.name + ".out")
+    ctx.actions.write(out, "")
     ctx.actions.run(
         executable = deploy,
         arguments = [ctx.label.name],
@@ -28,6 +29,5 @@ deploy_canary = rule(
             executable = True,
             cfg = "exec",
         ),
-    },
-    outputs = {"out": "%{name}.out"},
+    }
 )
