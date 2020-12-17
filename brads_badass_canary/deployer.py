@@ -57,6 +57,7 @@ class Deployer(object):
             )
         )
         deployment.wait()
+        return template
         
 
     def destroy(self):

@@ -44,7 +44,7 @@ def deploy(name):
     print("Deployment complete.")
 
     print("Deploying Canary...")
-    la_deployer().deploy(
+    retval = la_deployer().deploy(
         {
             "subscription_id": subscription_id,
             "resource_group": resource_group,
@@ -52,3 +52,4 @@ def deploy(name):
         }
     )
     print("Deployment complete.")
+    return retval
