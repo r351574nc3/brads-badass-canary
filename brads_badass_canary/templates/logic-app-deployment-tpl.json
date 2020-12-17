@@ -16,7 +16,7 @@
         }
     },
     "variables": {
-        "resource_group_base": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group')]",
+        "resource_group_base": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'))]",
         "connections_sms_service_externalid": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/connections/sms-service')]",
         "connections_office365_service_externalid": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/connections/office365-service')]",
         "connections_teams_service_externalid": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/connections/teams-service')]",
