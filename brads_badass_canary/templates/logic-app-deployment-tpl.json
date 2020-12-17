@@ -16,30 +16,13 @@
         }
     },
     "variables": {
-        "connections_sms_service_externalid": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/connections/sms-service')]",
-            "type": "string"
-        },
-        "connections_office365_service_externalid": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/connections/office365-service')]",
-            "type": "string"
-        },
-        "connections_teams_service_externalid": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/connections/teams-service')]",
-            "type": "string"
-        },
-        "connections_sms_service_id": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/azurecommunicationservicessms')]",
-            "type": "string"
-        },
-        "connections_office365_service_id": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/office365')]",
-            "type": "string"
-        },
-        "connections_teams_service_id": {
-            "defaultValue": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group'), '/providers/Microsoft.Web/locations/centralus/managedApis/teams')]",
-            "type": "string"
-        }
+        "resource_group_base": "[concat('/subscriptions/', parameters('subscription_id'), '/resourceGroups/', parameters('resource_group')]",
+        "connections_sms_service_externalid": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/connections/sms-service')]",
+        "connections_office365_service_externalid": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/connections/office365-service')]",
+        "connections_teams_service_externalid": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/connections/teams-service')]",
+        "connections_sms_service_id": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/locations/centralus/managedApis/azurecommunicationservicessms')]",
+        "connections_office365_service_id": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/locations/centralus/managedApis/office365')]",
+        "connections_teams_service_id": "[concat(variables('resource_group_base'), '/providers/Microsoft.Web/locations/centralus/managedApis/teams')]"
     },
     "resources": [
         {
