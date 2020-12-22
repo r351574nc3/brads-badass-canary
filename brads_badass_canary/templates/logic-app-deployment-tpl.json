@@ -26,6 +26,10 @@
         "connections_teams_service_id": "[concat(variables('subscription_base'), '/providers/Microsoft.Web/locations/centralus/managedApis/teams')]"
     },
     "outputs": {
+        "accessEndpoint": {
+            "type": "object",
+            "value": "[listCallbackURL(resourceId('Microsoft.Logic/workflows/triggers', parameters('workflows_notification_app_name'), 'manual'), '2016-06-01')]"
+        },
         "resource_group_base": {
             "value": "[variables('resource_group_base')]",
             "type": "string"
@@ -217,15 +221,5 @@
                 }
             }
         }
-    ],
-    "outputs": {
-        "deploymentOutput": {
-            "type": "object",
-            "value": "[deployment()]"
-        },
-        "environmentOutput": {
-            "type": "object",
-            "value": "[environment()]"
-        }
-    }
+    ]
 }
