@@ -217,5 +217,15 @@
                 }
             }
         }
-    ]
+    ],
+    "outputs": {
+        "deploymentOutput": {
+            "type": "object",
+            "value": "[deployment()]"
+        },
+        "environmentOutput": {
+            "type": "object",
+            "value": "[environment()]"
+        }
+    }
 }
