@@ -74,6 +74,116 @@
                                         "number": {
                                             "type": "integer"
                                         },
+                                        "review": {
+                                            "type": "object",
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "node_id": {
+                                                    "type": "string"
+                                                },
+                                                "user": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "login": {
+                                                            "type": "string"
+                                                        },
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "node_id": {
+                                                            "type": "string"
+                                                        },
+                                                        "avatar_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "gravatar_id": {
+                                                            "type": "string"
+                                                        },
+                                                        "url": {
+                                                            "type": "string"
+                                                        },
+                                                        "html_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "followers_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "following_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "gists_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "starred_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "subscriptions_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "organizations_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "repos_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "events_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "received_events_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "type": {
+                                                            "type": "string"
+                                                        },
+                                                        "site_admin": {
+                                                            "type": "boolean"
+                                                        }
+                                                    }
+                                                },
+                                                "body": {},
+                                                "commit_id": {
+                                                    "type": "string"
+                                                },
+                                                "submitted_at": {
+                                                    "type": "string"
+                                                },
+                                                "state": {
+                                                    "type": "string"
+                                                },
+                                                "html_url": {
+                                                    "type": "string"
+                                                },
+                                                "pull_request_url": {
+                                                    "type": "string"
+                                                },
+                                                "author_association": {
+                                                    "type": "string"
+                                                },
+                                                "_links": {
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "html": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "href": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        },
+                                                        "pull_request": {
+                                                            "type": "object",
+                                                            "properties": {
+                                                                "href": {
+                                                                    "type": "string"
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
                                         "pull_request": {
                                             "type": "object",
                                             "properties": {
