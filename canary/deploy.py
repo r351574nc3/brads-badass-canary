@@ -8,6 +8,7 @@ if __name__ == "__main__":
         data = deploy(name)
         filename = sys.argv[2]
         with open(filename, 'w') as outfile:
+            print("Outputting results to {}".format(filename))
             json.dump(data, outfile)
     else:
         sys.exit()
