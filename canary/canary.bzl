@@ -11,7 +11,13 @@ def _deploy_canary_impl(ctx):
     out = ctx.actions.declare_file(ctx.label.name + ".json")
     ctx.actions.run(
         executable = deploy,
-        arguments = [ctx.label.name, out.path],
+        arguments = [
+            ctx.label.name,
+            out.path,
+            ctx.attr.teams_connector_override,
+            ctx.attr.sms_connector_override,
+            ctx.attr.office365_connector_override
+        ],
         inputs = [],
         tools = [ deploy ],
         outputs = [ out ],

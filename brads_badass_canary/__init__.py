@@ -19,33 +19,37 @@ def conn_deployer():
 def deploy(
     name,
     teams_override=None,
+    sms_override=None,
     office365_override=None,
-    sms_override=None):
+    ):
     """Deploys necessary API connections and Logic App
 
     :param name: Name of the logic app to build and deploy
     :type string: 
     """
-    print("Deploying API Connections to subscription {}...".format(subscription_id))
-    for params in [
-        {   
-            "provider_name": "azurecommunicationservicessms",
-            "connection_name": "sms-service",
-            "subscription_id": subscription_id,
-        },
-        {
-            "provider_name": "office365",
-            "connection_name": "office365-service",
-            "subscription_id": subscription_id,
-        },
-        {
-            "provider_name": "teams",
-            "connection_name": "teams-service",
-            "subscription_id": subscription_id,
-        },
-    ]:
-        conn_deployer().deploy(params)
-    print("Deployment complete.")
+
+    # Only deploy API Connections if not overriding
+    if teams_override is None:
+        print("Deploying API Connections to subscription {}...".format(subscription_id))
+        for params in [
+            {   
+                "provider_name": "azurecommunicationservicessms",
+                "connection_name": "sms-service",
+                "subscription_id": subscription_id,
+            },
+            {
+                "provider_name": "office365",
+                "connection_name": "office365-service",
+                "subscription_id": subscription_id,
+            },
+            {
+                "provider_name": "teams",
+                "connection_name": "teams-service",
+                "subscription_id": subscription_id,
+            },
+        ]:
+            conn_deployer().deploy(params)
+        print("Deployment complete.")
 
     print("Deploying Canary...")
     if teams_override is not None:
