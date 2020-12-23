@@ -16,7 +16,11 @@ def la_deployer():
 def conn_deployer():
     return api_connections.deployer.Deployer(subscription_id, resource_group)
 
-def deploy(name):
+def deploy(
+    name,
+    teams_override=None,
+    office365_override=None,
+    sms_override=None):
     """Deploys necessary API connections and Logic App
 
     :param name: Name of the logic app to build and deploy
@@ -44,12 +48,25 @@ def deploy(name):
     print("Deployment complete.")
 
     print("Deploying Canary...")
-    retval = la_deployer().deploy(
-        {
-            "subscription_id": subscription_id,
-            "resource_group": resource_group,
-            "workflows_notification_app_name": name
-        }
-    )
+    if teams_override is not None:
+        retval = la_deployer().deploy(
+            {
+                "subscription_id": subscription_id,
+                "resource_group": resource_group,
+                "workflows_notification_app_name": name,
+                "teams_connector_override": teams_override,
+                "sms_connector_override": sms_override,
+                "office365_connector_override": office365_override,
+            }
+        )
+    else:
+        retval = la_deployer().deploy(
+            {
+                "subscription_id": subscription_id,
+                "resource_group": resource_group,
+                "workflows_notification_app_name": name
+            }
+        )
+        
     print("Deployment complete.")
     return retval

@@ -23,6 +23,9 @@ def _deploy_canary_impl(ctx):
 deploy_canary = rule(
     implementation = _deploy_canary_impl,
     attrs = {
+        "teams_connector_override": attr.string(),
+        "office365_connector_override": attr.string(),
+        "sms_connector_override": attr.string(),
         "_deploy": attr.label(
             default = Label("//canary:deploy"),
             allow_files = True,
