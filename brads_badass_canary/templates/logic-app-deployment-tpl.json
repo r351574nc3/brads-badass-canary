@@ -113,7 +113,7 @@
                                                     "Set_variable": {
                                                         "inputs": {
                                                             "name": "Message",
-                                                            "value": "<a href=\"@{triggerBody()?['comment']?['user']?['html_url']}\">@{triggerBody()?['comment']?['user']?['login']}</a> left a comment for pull request <a href=\"@{triggerBody()?['issue']?['html_url']}\">@{triggerBody()?['issue']?['html_url']}</a>  \n\n\n> @{triggerBody()?['comment']?['body']}"
+                                                            "value": "<a href=\"@{triggerBody()?['comment']?['user']?['html_url']}\">@{triggerBody()?['comment']?['user']?['login']}</a> left a comment for pull request <a href=\"@{triggerBody()?['issue']?['html_url']}\">@{triggerBody()?['issue']?['html_url']}</a>  \n\n\n> <a href=\"@{triggerBody()?['comment']?['body']}\">@{triggerBody()?['comment']?['body']}</a>"
                                                         },
                                                         "runAfter": {},
                                                         "type": "SetVariable"
