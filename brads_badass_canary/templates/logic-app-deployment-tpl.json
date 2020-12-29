@@ -98,7 +98,7 @@
                                             "Set_variable_onSubmitted": {
                                                 "inputs": {
                                                     "name": "Message",
-                                                    "value": "A new review was submitted for pull request <a href=\"@{triggerBody()?['pull_request']?['html_url']}\">@{triggerBody()?['pull_request']?['title']}</a>"
+                                                    "value": "<a href=\"@{triggerBody()?['review']?['user']?['html_url']}\">@{triggerBody()?['review']?['user']?['login']}</a> submitted a new review for pull request <a href=\"@{triggerBody()?['review']?['html_url']}\">@{triggerBody()?['pull_request']?['title']}</a>"
                                                 },
                                                 "runAfter": {},
                                                 "type": "SetVariable"
@@ -113,7 +113,7 @@
                                                     "Set_variable": {
                                                         "inputs": {
                                                             "name": "Message",
-                                                            "value": "<a href=\"@{triggerBody()?['comment']?['user']?['html_url']}\">@{triggerBody()?['comment']?['user']?['login']}</a> left a comment for pull request <a href=\"@{triggerBody()?['issue']?['html_url']}\">@{triggerBody()?['issue']?['html_url']}</a>  \n\n\n> <a href=\"@{triggerBody()?['comment']?['body']}\">@{triggerBody()?['comment']?['body']}</a>"
+                                                            "value": "@{triggerBody()?['pull_request']?['id']} <a href=\"@{triggerBody()?['comment']?['user']?['html_url']}\">@{triggerBody()?['comment']?['user']?['login']}</a> left a comment for pull request <a href=\"@{triggerBody()?['issue']?['html_url']}\">@{triggerBody()?['issue']?['html_url']}</a><br/><blockquote><a href=\"@{triggerBody()?['comment']?['html_url']}\">@{triggerBody()?['comment']?['body']}</a></blockquote>"
                                                         },
                                                         "runAfter": {},
                                                         "type": "SetVariable"
@@ -124,7 +124,7 @@
                                                         {
                                                             "not": {
                                                                 "equals": [
-                                                                    "@triggerBody()?['comment']?['body']",
+                                                                    "@triggerBody()?['comment']?['user']?['login']",
                                                                     ""
                                                                 ]
                                                             }
@@ -142,7 +142,7 @@
                                             "Set_variable_onOpened": {
                                                 "inputs": {
                                                     "name": "Message",
-                                                    "value": "A new Pull Request <a href=\"@{triggerBody()?['pull_request']?['html_url']}\">@{triggerBody()?['pull_request']?['title']}</a> was opened <a href=\"@{triggerBody()?['pull_request']?['user']?['html_url']}\">@{triggerBody()?['pull_request']?['user']?['login']}"
+                                                    "value": "<a href=\"@{triggerBody()?['pull_request']?['user']?['html_url']}\">@{triggerBody()?['pull_request']?['user']?['login']}</a> opened a new pull request <a href=\"@{triggerBody()?['pull_request']?['html_url']}\">@{triggerBody()?['pull_request']?['title']}</a>"
                                                 },
                                                 "runAfter": {},
                                                 "type": "SetVariable"
@@ -162,6 +162,31 @@
                                             }
                                         },
                                         "case": "closed"
+                                    },
+                                    "Case_6": {
+                                        "actions": {
+                                            "Terminate_2": {
+                                                "inputs": {
+                                                    "runStatus": "Cancelled"
+                                                },
+                                                "runAfter": {},
+                                                "type": "Terminate"
+                                            }
+                                        },
+                                        "case": "deleted"
+                                    },
+                                    "Case_7": {
+                                        "actions": {
+                                            "Set_variable_onEdited": {
+                                                "inputs": {
+                                                    "name": "Message",
+                                                    "value": "<a href=\"@{triggerBody()?['review']?['user']?['html_url']}\">@{triggerBody()?['review']?['user']?['login']}</a> updated review for pull request <a href=\"@{triggerBody()?['review']?['html_url']}\">@{triggerBody()?['pull_request']?['title']}</a>"
+                                                },
+                                                "runAfter": {},
+                                                "type": "SetVariable"
+                                            }
+                                        },
+                                        "case": "edited"
                                     }
                                 },
                                 "default": {
@@ -174,24 +199,124 @@
                         },
                         "else": {
                             "actions": {
-                                "Terminate": {
-                                    "inputs": {
-                                        "runStatus": "Cancelled"
+                                "Condition_Quality_Checks": {
+                                    "actions": {
+                                        "Switch_2": {
+                                            "cases": {
+                                                "Case": {
+                                                    "actions": {
+                                                        "Set_variable_onCheckFinish": {
+                                                            "inputs": {
+                                                                "name": "Message",
+                                                                "value": "<a href=\"@{triggerBody()?['check_run']?['html_url']}\">@{triggerBody()?['check_run']?['output']?['title']}</a> for @{triggerBody()?['check_run']?['name']} <b>@{triggerBody()?['check_run']?['status']}</b> with <b>@{triggerBody()?['check_run']?['conclusion']}</b> on <a href=\"@{first(triggerBody()?['check_run']?['pull_requests'])?['url']}\">@{first(triggerBody()?['check_run']?['pull_requests'])?['url']}</a>"
+                                                            },
+                                                            "runAfter": {},
+                                                            "type": "SetVariable"
+                                                        }
+                                                    },
+                                                    "case": "completed"
+                                                },
+                                                "Case_2": {
+                                                    "actions": {
+                                                        "Set_variable_onCheckStart": {
+                                                            "inputs": {
+                                                                "name": "Message",
+                                                                "value": "<a href=\"@{triggerBody()?['check_run']?['html_url']}\">@{triggerBody()?['check_run']?['output']?['title']}</a> for @{triggerBody()?['check_run']?['name']} <b>@{triggerBody()?['check_run']?['status']}</b> with <b>@{triggerBody()?['check_run']?['conclusion']}</b> on <a href=\"@{first(triggerBody()?['check_run']?['pull_requests'])?['url']}\">@{first(triggerBody()?['check_run']?['pull_requests'])?['url']}</a>"
+                                                            },
+                                                            "runAfter": {},
+                                                            "type": "SetVariable"
+                                                        }
+                                                    },
+                                                    "case": "created"
+                                                }
+                                            },
+                                            "default": {
+                                                "actions": {}
+                                            },
+                                            "expression": "@triggerBody()?['action']",
+                                            "runAfter": {},
+                                            "type": "Switch"
+                                        }
+                                    },
+                                    "else": {
+                                        "actions": {
+                                            "Condition_4": {
+                                                "actions": {
+                                                    "Switch_3": {
+                                                        "cases": {
+                                                            "Case": {
+                                                                "actions": {
+                                                                    "Set_variable_onBuild": {
+                                                                        "inputs": {
+                                                                            "name": "Message",
+                                                                            "value": "<a href=\"@{triggerBody()?['commit']?['author']?['html_url']}\">@{triggerBody()?['commit']?['author']?['login']}</a> started a build on branch <a href=\"@{first(triggerBody()?['branches'])?['commit']?['url']}\">@{first(triggerBody()?['branches'])?['name']}</a>. (See <a href=\"@{triggerBody()?['target_url']}\">@{triggerBody()?['target_url']}</a>)"
+                                                                        },
+                                                                        "runAfter": {},
+                                                                        "type": "SetVariable"
+                                                                    }
+                                                                },
+                                                                "case": "pending"
+                                                            },
+                                                            "Case_2": {
+                                                                "actions": {},
+                                                                "case": "success"
+                                                            },
+                                                            "Case_3": {
+                                                                "actions": {},
+                                                                "case": "failure"
+                                                            }
+                                                        },
+                                                        "default": {
+                                                            "actions": {}
+                                                        },
+                                                        "expression": "@triggerBody()?['state']",
+                                                        "runAfter": {},
+                                                        "type": "Switch"
+                                                    }
+                                                },
+                                                "expression": {
+                                                    "and": [
+                                                        {
+                                                            "equals": [
+                                                                "@triggerBody()?['context']",
+                                                                "continuous-integration/jenkins/pr-merge"
+                                                            ]
+                                                        }
+                                                    ]
+                                                },
+                                                "runAfter": {},
+                                                "type": "If"
+                                            }
+                                        }
+                                    },
+                                    "expression": {
+                                        "and": [
+                                            {
+                                                "contains": [
+                                                    "@triggerBody()?['check_run']",
+                                                    "status"
+                                                ]
+                                            },
+                                            {
+                                                "contains": [
+                                                    "@triggerBody()",
+                                                    "action"
+                                                ]
+                                            }
+                                        ]
                                     },
                                     "runAfter": {},
-                                    "type": "Terminate"
+                                    "type": "If"
                                 }
                             }
                         },
                         "expression": {
                             "and": [
                                 {
-                                    "not": {
-                                        "equals": [
-                                            "@triggerBody()?['pull_request']",
-                                            ""
-                                        ]
-                                    }
+                                    "contains": [
+                                        "@triggerBody()",
+                                        "pull_request"
+                                    ]
                                 }
                             ]
                         },
@@ -301,7 +426,7 @@
                         "inputs": {
                             "body": {
                                 "body": {
-                                    "content": "<p>@{variables('Message')}</p>",
+                                    "content": "<p>@{variables('Message')}&nbsp;</p>",
                                     "contentType": "html"
                                 }
                             },
@@ -335,6 +460,720 @@
                             "schema": {
                                 "properties": {
                                     "action": {
+                                        "type": "string"
+                                    },
+                                    "avatar_url": {
+                                        "type": "string"
+                                    },
+                                    "check_run": {
+                                        "properties": {
+                                            "app": {
+                                                "properties": {
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "description": {
+                                                        "type": "string"
+                                                    },
+                                                    "events": {
+                                                        "type": "array"
+                                                    },
+                                                    "external_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "html_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "name": {
+                                                        "type": "string"
+                                                    },
+                                                    "node_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "owner": {
+                                                        "properties": {
+                                                            "avatar_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "events_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "followers_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "following_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "gists_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "gravatar_id": {
+                                                                "type": "string"
+                                                            },
+                                                            "html_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "login": {
+                                                                "type": "string"
+                                                            },
+                                                            "node_id": {
+                                                                "type": "string"
+                                                            },
+                                                            "organizations_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "received_events_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "repos_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "site_admin": {
+                                                                "type": "boolean"
+                                                            },
+                                                            "starred_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "subscriptions_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "type": {
+                                                                "type": "string"
+                                                            },
+                                                            "url": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "permissions": {
+                                                        "properties": {
+                                                            "checks": {
+                                                                "type": "string"
+                                                            },
+                                                            "metadata": {
+                                                                "type": "string"
+                                                            },
+                                                            "pull_requests": {
+                                                                "type": "string"
+                                                            },
+                                                            "statuses": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "slug": {
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "check_suite": {
+                                                "properties": {
+                                                    "after": {
+                                                        "type": "string"
+                                                    },
+                                                    "app": {
+                                                        "properties": {
+                                                            "created_at": {
+                                                                "type": "string"
+                                                            },
+                                                            "description": {
+                                                                "type": "string"
+                                                            },
+                                                            "events": {
+                                                                "type": "array"
+                                                            },
+                                                            "external_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "html_url": {
+                                                                "type": "string"
+                                                            },
+                                                            "id": {
+                                                                "type": "integer"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            },
+                                                            "node_id": {
+                                                                "type": "string"
+                                                            },
+                                                            "owner": {
+                                                                "properties": {
+                                                                    "avatar_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "events_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "followers_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "following_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "gists_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "gravatar_id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "html_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "id": {
+                                                                        "type": "integer"
+                                                                    },
+                                                                    "login": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "node_id": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "organizations_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "received_events_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "repos_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "site_admin": {
+                                                                        "type": "boolean"
+                                                                    },
+                                                                    "starred_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "subscriptions_url": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "type": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "url": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "permissions": {
+                                                                "properties": {
+                                                                    "checks": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "metadata": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "pull_requests": {
+                                                                        "type": "string"
+                                                                    },
+                                                                    "statuses": {
+                                                                        "type": "string"
+                                                                    }
+                                                                },
+                                                                "type": "object"
+                                                            },
+                                                            "slug": {
+                                                                "type": "string"
+                                                            },
+                                                            "updated_at": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "before": {
+                                                        "type": "string"
+                                                    },
+                                                    "conclusion": {
+                                                        "type": "string"
+                                                    },
+                                                    "created_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "head_branch": {
+                                                        "type": "string"
+                                                    },
+                                                    "head_sha": {
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "node_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "pull_requests": {
+                                                        "items": {
+                                                            "properties": {
+                                                                "base": {
+                                                                    "properties": {
+                                                                        "ref": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "repo": {
+                                                                            "properties": {
+                                                                                "id": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "name": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "url": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        },
+                                                                        "sha": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "head": {
+                                                                    "properties": {
+                                                                        "ref": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "repo": {
+                                                                            "properties": {
+                                                                                "id": {
+                                                                                    "type": "integer"
+                                                                                },
+                                                                                "name": {
+                                                                                    "type": "string"
+                                                                                },
+                                                                                "url": {
+                                                                                    "type": "string"
+                                                                                }
+                                                                            },
+                                                                            "type": "object"
+                                                                        },
+                                                                        "sha": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "id": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "number": {
+                                                                    "type": "integer"
+                                                                },
+                                                                "url": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "required": [
+                                                                "url",
+                                                                "id",
+                                                                "number",
+                                                                "head",
+                                                                "base"
+                                                            ],
+                                                            "type": "object"
+                                                        },
+                                                        "type": "array"
+                                                    },
+                                                    "status": {
+                                                        "type": "string"
+                                                    },
+                                                    "updated_at": {
+                                                        "type": "string"
+                                                    },
+                                                    "url": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "completed_at": {
+                                                "type": "string"
+                                            },
+                                            "conclusion": {
+                                                "type": "string"
+                                            },
+                                            "details_url": {
+                                                "type": "string"
+                                            },
+                                            "external_id": {
+                                                "type": "string"
+                                            },
+                                            "head_sha": {
+                                                "type": "string"
+                                            },
+                                            "html_url": {
+                                                "type": "string"
+                                            },
+                                            "id": {
+                                                "type": "integer"
+                                            },
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "node_id": {
+                                                "type": "string"
+                                            },
+                                            "output": {
+                                                "properties": {
+                                                    "annotations_count": {
+                                                        "type": "integer"
+                                                    },
+                                                    "annotations_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "summary": {
+                                                        "type": "string"
+                                                    },
+                                                    "text": {},
+                                                    "title": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "pull_requests": {
+                                                "items": {
+                                                    "properties": {
+                                                        "base": {
+                                                            "properties": {
+                                                                "ref": {
+                                                                    "type": "string"
+                                                                },
+                                                                "repo": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "url": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "sha": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "head": {
+                                                            "properties": {
+                                                                "ref": {
+                                                                    "type": "string"
+                                                                },
+                                                                "repo": {
+                                                                    "properties": {
+                                                                        "id": {
+                                                                            "type": "integer"
+                                                                        },
+                                                                        "name": {
+                                                                            "type": "string"
+                                                                        },
+                                                                        "url": {
+                                                                            "type": "string"
+                                                                        }
+                                                                    },
+                                                                    "type": "object"
+                                                                },
+                                                                "sha": {
+                                                                    "type": "string"
+                                                                }
+                                                            },
+                                                            "type": "object"
+                                                        },
+                                                        "id": {
+                                                            "type": "integer"
+                                                        },
+                                                        "number": {
+                                                            "type": "integer"
+                                                        },
+                                                        "url": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "url",
+                                                        "id",
+                                                        "number",
+                                                        "head",
+                                                        "base"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "type": "array"
+                                            },
+                                            "started_at": {
+                                                "type": "string"
+                                            },
+                                            "status": {
+                                                "type": "string"
+                                            },
+                                            "url": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "commit": {
+                                        "properties": {
+                                            "author": {
+                                                "properties": {
+                                                    "avatar_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "events_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "followers_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "following_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "gists_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "gravatar_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "html_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "ldap_dn": {
+                                                        "type": "string"
+                                                    },
+                                                    "login": {
+                                                        "type": "string"
+                                                    },
+                                                    "node_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "organizations_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "received_events_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "repos_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "site_admin": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "starred_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "subscriptions_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "url": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "comments_url": {
+                                                "type": "string"
+                                            },
+                                            "commit": {
+                                                "properties": {
+                                                    "author": {
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string"
+                                                            },
+                                                            "email": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "comment_count": {
+                                                        "type": "integer"
+                                                    },
+                                                    "committer": {
+                                                        "properties": {
+                                                            "date": {
+                                                                "type": "string"
+                                                            },
+                                                            "email": {
+                                                                "type": "string"
+                                                            },
+                                                            "name": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "message": {
+                                                        "type": "string"
+                                                    },
+                                                    "tree": {
+                                                        "properties": {
+                                                            "sha": {
+                                                                "type": "string"
+                                                            },
+                                                            "url": {
+                                                                "type": "string"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    },
+                                                    "url": {
+                                                        "type": "string"
+                                                    },
+                                                    "verification": {
+                                                        "properties": {
+                                                            "payload": {},
+                                                            "reason": {
+                                                                "type": "string"
+                                                            },
+                                                            "signature": {},
+                                                            "verified": {
+                                                                "type": "boolean"
+                                                            }
+                                                        },
+                                                        "type": "object"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "committer": {
+                                                "properties": {
+                                                    "avatar_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "events_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "followers_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "following_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "gists_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "gravatar_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "html_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "id": {
+                                                        "type": "integer"
+                                                    },
+                                                    "ldap_dn": {
+                                                        "type": "string"
+                                                    },
+                                                    "login": {
+                                                        "type": "string"
+                                                    },
+                                                    "node_id": {
+                                                        "type": "string"
+                                                    },
+                                                    "organizations_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "received_events_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "repos_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "site_admin": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "starred_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "subscriptions_url": {
+                                                        "type": "string"
+                                                    },
+                                                    "type": {
+                                                        "type": "string"
+                                                    },
+                                                    "url": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "html_url": {
+                                                "type": "string"
+                                            },
+                                            "node_id": {
+                                                "type": "string"
+                                            },
+                                            "parents": {
+                                                "items": {
+                                                    "properties": {
+                                                        "html_url": {
+                                                            "type": "string"
+                                                        },
+                                                        "sha": {
+                                                            "type": "string"
+                                                        },
+                                                        "url": {
+                                                            "type": "string"
+                                                        }
+                                                    },
+                                                    "required": [
+                                                        "sha",
+                                                        "url",
+                                                        "html_url"
+                                                    ],
+                                                    "type": "object"
+                                                },
+                                                "type": "array"
+                                            },
+                                            "sha": {
+                                                "type": "string"
+                                            },
+                                            "url": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    },
+                                    "context": {
+                                        "type": "string"
+                                    },
+                                    "description": {
+                                        "type": "string"
+                                    },
+                                    "id": {
+                                        "type": "integer"
+                                    },
+                                    "name": {
                                         "type": "string"
                                     },
                                     "number": {
@@ -1731,6 +2570,15 @@
                                             }
                                         },
                                         "type": "object"
+                                    },
+                                    "sha": {
+                                        "type": "string"
+                                    },
+                                    "state": {
+                                        "type": "string"
+                                    },
+                                    "target_url": {
+                                        "type": "string"
                                     }
                                 },
                                 "type": "object"
