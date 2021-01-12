@@ -75,7 +75,7 @@
         {
             "type": "Microsoft.Logic/workflows",
             "apiVersion": "2017-07-01",
-            "name": "[parameters('workflows_notification_app_name)]",
+            "name": "[parameters('workflows_notification_app_name')]",
             "location": "centralus",
             "properties": {
                 "state": "Enabled",
@@ -2594,25 +2594,25 @@
                             "type": "Request"
                         }
                     }
-                }
-            },
-            "parameters": {
-                "$connections": {
-                    "value": {
-                        "azurecommunicationservicessms": {
-                            "connectionId": "[variables('connections_sms_service_externalid')]",
-                            "connectionName": "azurecommunicationservicessms",
-                            "id": "[variables('connections_sms_service_id')]"
-                        },
-                        "office365": {
-                            "connectionId": "[variables('connections_office365_service_externalid')]",
-                            "connectionName": "office365",
-                            "id": "[variables('connections_office365_service_id')]"
-                        },
-                        "teams": {
-                            "connectionId": "[variables('connections_teams_service_externalid')]",
-                            "connectionName": "teams",
-                            "id": "[variables('connections_teams_service_id')]"
+                },
+                "parameters": {
+                    "$connections": {
+                        "value": {
+                            "azurecommunicationservicessms": {
+                                "connectionId": "[variables('connections_sms_service_externalid')]",
+                                "connectionName": "azurecommunicationservicessms",
+                                "id": "[variables('connections_sms_service_id')]"
+                            },
+                            "office365": {
+                                "connectionId": "[variables('connections_office365_service_externalid')]",
+                                "connectionName": "office365",
+                                "id": "[variables('connections_office365_service_id')]"
+                            },
+                            "teams": {
+                                "connectionId": "[variables('connections_teams_service_externalid')]",
+                                "connectionName": "teams",
+                                "id": "[variables('connections_teams_service_id')]"
+                            }
                         }
                     }
                 }
